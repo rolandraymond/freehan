@@ -7,7 +7,6 @@ const CTASection = () => {
   const { t, isRTL } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // تأثيرات التمرير (Parallax)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -16,7 +15,6 @@ const CTASection = () => {
   const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
   const opacityText = useTransform(scrollYProgress, [0, 0.5, 0.8], [0.5, 1, 0]);
 
-  // إنشاء مجموعتين من الجسيمات: قريبة (كبيرة) وبعيدة (صغيرة وضبابية)
   const fireflies = Array.from({ length: 15 });
   const starDust = Array.from({ length: 30 });
 
@@ -26,9 +24,9 @@ const CTASection = () => {
       className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#030712]"
     >
       
-      {/* ================= 1. ATMOSPHERE (الجو العام) ================= */}
+      {/* ================= 1. ATMOSPHERE ( ================= */}
       
-      {/* سديم كوني في الخلفية (Nebula) */}
+      {/* (Nebula) */}
       <motion.div 
         animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.1, 1] }}
         transition={{ duration: 10, repeat: Infinity }}
@@ -40,20 +38,19 @@ const CTASection = () => {
         className="absolute bottom-[-10%] right-[10%] w-[50vw] h-[50vw] bg-amber-900/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none"
       />
 
-      {/* شبكة أرضية لتعطي عمق (Grid Floor) */}
+      {/* (Grid Floor) */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_60%,transparent_100%)] opacity-20 pointer-events-none" />
 
 
-      {/* ================= 2. ADVANCED PARTICLES (الجسيمات المتطورة) ================= */}
+      {/* ================= 2. ADVANCED PARTICLES ( ================= */}
       
-      {/* المجموعة 1: غبار النجوم البعيد (صغير وضبابي) */}
+      
       <div className="absolute inset-0 pointer-events-none">
         {starDust.map((_, i) => (
           <StarDustParticle key={`dust-${i}`} />
         ))}
       </div>
 
-      {/* المجموعة 2: اليراعات القريبة (مضيئة وواضحة) */}
       <div className="absolute inset-0 pointer-events-none z-20">
         {fireflies.map((_, i) => (
           <FireflyParticle key={`fly-${i}`} />
@@ -119,10 +116,8 @@ const CTASection = () => {
            
            <a href="tel:0572260062" className="relative flex items-center justify-center gap-4 px-10 py-5 bg-gradient-to-b from-slate-900 to-black border border-yellow-500/50 rounded-full overflow-hidden group-hover:scale-105 transition-transform duration-300">
               
-              {/* لمعة زجاجية تتحرك فوق الزر */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700" />
               
-              {/* أيقونة الهاتف تهتز عند التحويم */}
               <Phone className="w-5 h-5 text-yellow-500 fill-yellow-500/20 group-hover:rotate-12 transition-transform" />
               
               <span className="text-white font-bold text-lg tracking-wide z-10">
@@ -140,14 +135,13 @@ const CTASection = () => {
 
 // ================= COMPONENT: FIREFLY PARTICLE (اليراعات القريبة) =================
 const FireflyParticle = () => {
-  // خصائص عشوائية للحركة (يمين/يسار + فوق/تحت)
   const randomXStart = Math.random() * 100;
   const randomDelay = Math.random() * 5;
-  const size = Math.random() * 4 + 2; // حجم كبير نسبياً
+  const size = Math.random() * 4 + 2; 
 
   return (
     <motion.div
-      className="absolute rounded-full bg-yellow-400 blur-[1px]" // لون ذهبي
+      className="absolute rounded-full bg-yellow-400 blur-[1px]" 
       style={{
         left: `${randomXStart}%`,
         width: size,
@@ -177,7 +171,7 @@ const StarDustParticle = () => {
 
   return (
     <motion.div
-      className="absolute rounded-full bg-blue-200 blur-[0.5px] opacity-20" // لون أزرق بارد للعمق
+      className="absolute rounded-full bg-blue-200 blur-[0.5px] opacity-20" 
       style={{
         left: `${randomX}%`,
         width: size,
@@ -188,7 +182,7 @@ const StarDustParticle = () => {
         opacity: [0, 0.3, 0],
       }}
       transition={{
-        duration: 20 + Math.random() * 15, // أبطأ جداً لأنه بعيد
+        duration: 20 + Math.random() * 15, 
         repeat: Infinity,
         delay: randomDelay,
         ease: "linear",
