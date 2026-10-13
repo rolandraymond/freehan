@@ -1,0 +1,520 @@
+Created At: 2026-10-13T16:04:50+03:00
+Completed At: 2026-10-13T16:04:50+03:00
+File Path: `file:///c:/Users/dell/Desktop/repo/freehan/src/components/Navbar.tsx`
+Total Lines: 512
+Total Bytes: 24849
+Showing lines 1 to 512
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import React, { useState, useEffect } from 'react';
+2: import { Link, useLocation } from 'react-router-dom';
+3: import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+4: import { Menu, X, Phone, MapPin, Clock, ArrowRight, ChevronDown, Sparkles, Activity, Scissors } from 'lucide-react';
+5: import { useLanguage } from '@/context/LanguageContext'; 
+6: import { cn } from '@/lib/utils'; 
+7: 
+8: interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+9:   children: React.ReactNode;
+10:   variant?: 'primary' | 'outline';
+11: }
+12: 
+13: const ShimmerButton = ({ className, children, variant = 'primary', ...props }: ButtonProps) => (
+14:   <button
+15:     className={cn(
+16:       "relative group overflow-hidden rounded-full font-bold transition-all duration-300 active:scale-95 text-xs sm:text-sm tracking-wide",
+17:       variant === 'primary' 
+18:         ? "bg-gradient-to-r from-rose-500 via-pink-400 to-amber-400 hover:from-rose-400 hover:via-pink-300 hover:to-amber-300 text-slate-950 shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40" 
+19:         : "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50",
+20:       className
+21:     )}
+22:     {...props}
+23:   >
+24:     <div className="absolute inset-0 -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent z-10" />
+25:     <span className="relative z-20 flex items-center justify-center gap-2">
+26:       {children}
+27:     </span>
+28:   </button>
+29: );
+30: 
+31: const Navbar = () => {
+32:   const [isScrolled, setIsScrolled] = useState(false);
+33:   const [isOpen, setIsOpen] = useState(false);
+34:   
+35:   const [isServicesHovered, setIsServicesHovered] = useState(false);
+36:   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+37: 
+38:   const location = useLocation();
+39:   const { scrollY } = useScroll();
+40:   const { language, setLanguage, t, isRTL } = useLanguage();
+41: 
+42:   const isHomePage = location.pathname === '/';
+43: 
+44:   useMotionValueEvent(scrollY, "change", (latest) => {
+45:     const scrolled = latest > 20;
+46:     if (scrolled !== isScrolled) setIsScrolled(scrolled);
+47:   });
+48: 
+49:   useEffect(() => { 
+50:     setIsOpen(false); 
+51:     setIsMobileServicesOpen(false);
+52:   }, [location.pathname]);
+53: 
+54: // Curvy body silhouette icon
+55: const BodyContourIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+56:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+57:     <path d="M7.5 3c3 1.5 2 6 4.5 9-2.5 3-1.5 7.5-4.5 9" />
+58:     <path d="M16.5 3c-3 1.5-2 6-4.5 9 2.5 3 1.5 7.5 4.5 9" />
+59:     <path d="M9 7.5h6" />
+60:     <path d="M10.5 12h3" />
+61:     <path d="M8.5 16.5h7" />
+62:   </svg>
+63: );
+64: 
+65: // Hair follicle & strand icon (matching RealResults)
+66: const HairFollicleIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+67:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+68:     <path d="M16 21c-2 0-3.5-1.5-3.5-3.5 0-2 1.5-4 3.5-7 2.5-3.8 3-6.5 1-9.5" />
+69:     <path d="M16 21a2.5 2.5 0 0 0 2.5-2.5c0-1.8-1.2-3.2-2.5-5" />
+70:   </svg>
+71: );
+72: 
+73:   const serviceSubLinks = [
+74:     { 
+75:       id: 'dermatology', 
+76:       label: language === 'en' ? '01 — Dermatology & Laser' : '01 — الجلدية والليزر', 
+77:       desc: language === 'en' ? 'Advanced skin & laser care' : 'علاجات البشرة والليزر المتقدمة',
+78:       icon: Sparkles,
+79:       href: '/services/dermatology-laser'
+80:     },
+81:     { 
+82:       id: 'nutrition', 
+83:       label: language === 'en' ? '02 — Nutrition & Contouring' : '02 — التغذية ونحت الجسم', 
+84:       desc: language === 'en' ? 'Body contouring & clinical diet' : 'نحت القوام والتغذية المتوازنة',
+85:       icon: BodyContourIcon,
+86:       href: '/services/nutrition-contouring' 
+87:     },
+88:     { 
+89:       id: 'hair', 
+90:       label: language === 'en' ? '03 — Hair Transplant & Care' : '03 — زراعة وعلاج الشعر', 
+91:       desc: language === 'en' ? 'Restoration & scalp solutions' : 'حلول تساقط واستعادة الشعر',
+92:       icon: HairFollicleIcon,
+93:       href: '/services/hair-restoration' 
+94:     },
+95:   ];
+96: 
+97:   const navLinks = [
+98:     { href: '/', label: t.nav.home },
+99:     { href: '/services', label: t.nav.services, hasDropdown: true },
+100:     { href: '/dr-freihan', label: t.nav.doctor },
+101:     { href: '/results', label: t.nav.results },
+102:     { href: '/video-gallery', label: t.nav.videoGallery },
+103:     { href: '/offers', label: t.nav.offers },
+104:     { href: '/contact-us', label: t.nav.contact },
+105:   ];
+106: 
+107:   // Visual style calculation based on page & scroll
+108:   const isDarkNavTheme = isHomePage && !isScrolled;
+109: 
+110:   return (
+111:     <>
+112:       {/* ======================= TOP BAR ======================= */}
+113:       <motion.div
+114:         className="fixed top-0 left-0 right-0 z-50 bg-[#070b13] text-slate-300 text-[11px] sm:text-xs font-medium tracking-wide border-b border-white/5"
+115:         initial={{ height: 'auto', opacity: 1, y: 0 }}
+116:         animate={{ 
+117:           height: isScrolled ? 0 : '38px', 
+118:           opacity: isScrolled ? 0 : 1,
+119:           y: isScrolled ? -38 : 0
+120:         }}
+121:         transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+122:       >
+123:         <div className="container mx-auto px-4 sm:px-6 h-full flex justify-between items-center">
+124:           <div className="flex items-center gap-6">
+125:             <a href="tel:01126660905" className="flex items-center gap-2 hover:text-amber-400 transition-colors group">
+126:               <div className="p-1 rounded-full bg-white/5 group-hover:bg-amber-400/10 transition-colors">
+127:                 <Phone className="w-3 h-3 text-amber-400" />
+128:               </div>
+129:               <span className="font-mono" dir="ltr">011 2666 0905</span>
+130:             </a>
+131:             <span className="hidden md:flex items-center gap-2 text-slate-400">
+132:               <MapPin className="w-3 h-3 text-amber-500/80" /> 
+133:               {language === 'en' ? 'Damietta — Safwa Mall & Central Zone' : 'دمياط — الصفوة مول والمنطقة المركزية'}
+134:             </span>
+135:           </div>
+136: 
+137:           <div className="flex items-center gap-4">
+138:              <span className="hidden sm:flex items-center gap-2 text-slate-400">
+139:                 <Clock className="w-3 h-3 text-amber-500/80" /> 
+140:                 {language === 'en' ? 'Daily: 10:00 AM – 10:00 PM' : 'يومياً: ١٠:٠٠ ص – ١٠:٠٠ م'}
+141:              </span>
+142:              
+143:              {/* Language Switcher in Topbar */}
+144:              <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
+145:                 <button 
+146:                   onClick={() => setLanguage('ar')}
+147:                   className={cn(
+148:                     "text-[10px] font-bold px-1.5 py-0.5 rounded transition-all",
+149:                     language === 'ar' ? 'text-amber-400 font-extrabold' : 'text-slate-400 hover:text-white'
+150:                   )}
+151:                 >
+152:                   AR
+153:                 </button>
+154:                 <span className="text-white/20 text-[10px]">|</span>
+155:                 <button 
+156:                   onClick={() => setLanguage('en')}
+157:                   className={cn(
+158:                     "text-[10px] font-bold px-1.5 py-0.5 rounded transition-all",
+159:                     language === 'en' ? 'text-amber-400 font-extrabold' : 'text-slate-400 hover:text-white'
+160:                   )}
+161:                 >
+162:                   EN
+163:                 </button>
+164:              </div>
+165:           </div>
+166:         </div>
+167:       </motion.div>
+168: 
+169:       {/* ======================= MAIN NAVBAR ======================= */}
+170:       <motion.header
+171:         className={cn(
+172:           "fixed left-0 right-0 z-40 transition-all duration-500",
+173:           isScrolled ? "top-3" : "top-[38px]" 
+174:         )}
+175:       >
+176:         <div className="container mx-auto px-3 sm:px-6">
+177:           <div className={cn(
+178:             "mx-auto transition-all duration-500 flex items-center justify-between px-4 sm:px-6 py-2.5 rounded-full border",
+179:             isScrolled
+180:               ? "max-w-6xl bg-white/95 backdrop-blur-xl shadow-2xl shadow-slate-900/10 border-slate-200/80 text-slate-900"
+181:               : isDarkNavTheme
+182:                 ? "max-w-7xl bg-black/40 backdrop-blur-md border-white/10 text-white shadow-lg"
+183:                 : "max-w-7xl bg-white/90 backdrop-blur-md border-slate-200/80 text-slate-900 shadow-sm"
+184:           )}>
+185:             
+186:             {/* BRAND LOGO */}
+187:             <Link to="/" className="relative z-10 flex items-center gap-3 group">
+188:                <div className={cn("relative transition-all duration-300 py-1", isScrolled ? "w-28 sm:w-32" : "w-32 sm:w-40")}>
+189:                   <img 
+190:                     src={isScrolled ? "/blogo.png" : isDarkNavTheme ? "/logo.png" : "/blogo.png"} 
+191:                     alt="Dr. Freihan Zakaria" 
+192:                     className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105" 
+193:                   />
+194:                </div>
+195:             </Link>
+196: 
+197:             {/* DESKTOP NAV LINKS */}
+198:             <nav className={cn(
+199:               "hidden xl:flex items-center gap-1 p-1 rounded-full border text-xs font-semibold tracking-wide",
+200:               isScrolled || !isDarkNavTheme
+201:                 ? "bg-slate-100/70 border-slate-200/60 text-slate-600"
+202:                 : "bg-white/5 border-white/10 text-slate-300"
+203:             )}>
+204:               {navLinks.map((link) => {
+205:                 const isActive = location.pathname === link.href;
+206:                 
+207:                 if (link.hasDropdown) {
+208:                   return (
+209:                     <div 
+210:                       key={link.href}
+211:                       className="relative"
+212:                       onMouseEnter={() => setIsServicesHovered(true)}
+213:                       onMouseLeave={() => setIsServicesHovered(false)}
+214:                     >
+215:                       <Link
+216:                         to={link.href}
+217:                         className={cn(
+218:                           "relative px-3.5 py-2 transition-all duration-300 rounded-full z-10 flex items-center gap-1",
+219:                           isActive || isServicesHovered 
+220:                             ? (isScrolled || !isDarkNavTheme ? "text-slate-950 font-bold" : "text-white font-bold")
+221:                             : "hover:text-amber-500"
+222:                         )}
+223:                       >
+224:                         {link.label}
+225:                         <ChevronDown className={cn("w-3 h-3 transition-transform duration-300", isServicesHovered ? "rotate-180 text-amber-500" : "")} />
+226:                         {isActive && !isServicesHovered && (
+227:                           <motion.div layoutId="nav-pill" className="absolute inset-0 bg-white shadow-sm rounded-full -z-10 border border-slate-200/50" />
+228:                         )}
+229:                       </Link>
+230: 
+231:                       {/* Dropdown Menu */}
+232:                       <AnimatePresence>
+233:                         {isServicesHovered && (
+234:                           <motion.div
+235:                             initial={{ opacity: 0, y: 10, scale: 0.96 }}
+236:                             animate={{ opacity: 1, y: 0, scale: 1 }}
+237:                             exit={{ opacity: 0, y: 8, scale: 0.96 }}
+238:                             transition={{ duration: 0.2 }}
+239:                             className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-80 z-50"
+240:                           >
+241:                             <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 p-2.5 text-slate-800">
+242:                                {serviceSubLinks.map((subItem) => (
+243:                                  <Link
+244:                                    key={subItem.id}
+245:                                    to={subItem.href}
+246:                                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-amber-50/70 text-slate-700 hover:text-slate-950 transition-colors group"
+247:                                  >
+248:                                     <div className="p-2 bg-slate-100 rounded-xl group-hover:bg-amber-500 group-hover:text-slate-950 text-slate-700 transition-colors shrink-0">
+249:                                        <subItem.icon className="w-4 h-4" />
+250:                                     </div>
+251:                                     <div className="text-start">
+252:                                       <p className="text-xs font-bold text-slate-900 group-hover:text-amber-700">{subItem.label}</p>
+253:                                       <p className="text-[10px] text-slate-500 mt-0.5">{subItem.desc}</p>
+254:                                     </div>
+255:                                  </Link>
+256:                                ))}
+257:                                <div className="border-t border-slate-100 mt-1 pt-1.5 px-1">
+258:                                   <Link
+259:                                     to="/services"
+260:                                     className="flex items-center justify-between text-[11px] font-bold text-amber-600 hover:text-amber-700 p-2 rounded-lg hover:bg-amber-50 transition-colors"
+261:                                   >
+262:                                     <span>{language === 'en' ? 'View All Clinic Services' : 'استعراض جميع الخدمات'}</span>
+263:                                     <ArrowRight className={cn("w-3.5 h-3.5", isRTL ? "rotate-180" : "")} />
+264:                                   </Link>
+265:                                </div>
+266:                             </div>
+267:                           </motion.div> 
+268:                         )}
+269:                       </AnimatePresence>
+270:                     </div>
+271:                   );
+272:                 }
+273: 
+274:                 return (
+275:                   <Link
+276:                     key={link.href}
+277:                     to={link.href}
+278:                     className={cn(
+279:                       "relative px-3.5 py-2 transition-all duration-300 rounded-full z-10",
+280:                       isActive 
+281:                         ? (isScrolled || !isDarkNavTheme ? "text-slate-950 font-bold" : "text-white font-bold")
+282:                         : "hover:text-amber-500"
+283:                     )}
+284:                   >
+285:                     {link.label}
+286:                     {isActive && (
+287:                       <motion.div
+288:                         layoutId="nav-pill"
+289:                         className={cn(
+290:                           "absolute inset-0 shadow-sm rounded-full -z-10",
+291:                           isScrolled || !isDarkNavTheme 
+292:                             ? "bg-white border border-slate-200/60" 
+293:                             : "bg-white/20 border border-white/20"
+294:                         )}
+295:                         transition={{ type: "spring", stiffness: 350, damping: 30 }}
+296:                       />
+297:                     )}
+298:                   </Link>
+299:                 );
+300:               })}
+301:             </nav>
+302: 
+303:             {/* ACTIONS: LANGUAGE SWITCHER & BOOKING CTA */}
+304:             <div className="flex items-center gap-3">
+305:               {/* Language Switcher AR | EN */}
+306:               <div className={cn(
+307:                 "hidden sm:flex items-center rounded-full p-1 border text-xs font-bold transition-colors",
+308:                 isScrolled || !isDarkNavTheme
+309:                   ? "bg-slate-100 border-slate-200 text-slate-700"
+310:                   : "bg-black/30 border-white/15 text-slate-300"
+311:               )}>
+312:                 <button
+313:                   onClick={() => setLanguage('ar')}
+314:                   className={cn(
+315:                     "px-2.5 py-1 rounded-full transition-all text-xs font-bold",
+316:                     language === 'ar'
+317:                       ? "bg-amber-500 text-slate-950 shadow-sm"
+318:                       : "hover:text-amber-500"
+319:                   )}
+320:                 >
+321:                   AR
+322:                 </button>
+323:                 <span className="px-1 text-slate-400 text-xs">|</span>
+324:                 <button
+325:                   onClick={() => setLanguage('en')}
+326:                   className={cn(
+327:                     "px-2.5 py-1 rounded-full transition-all text-xs font-bold",
+328:                     language === 'en'
+329:                       ? "bg-amber-500 text-slate-950 shadow-sm"
+330:                       : "hover:text-amber-500"
+331:                   )}
+332:                 >
+333:                   EN
+334:                 </button>
+335:               </div>
+336: 
+337:               {/* Booking CTA Button (DIRECTS TO /booking) */}
+338:               <Link to="/booking">
+339:                 <ShimmerButton className={cn(isScrolled ? "px-4 sm:px-5 py-2 text-xs" : "px-5 sm:px-6 py-2.5 text-xs sm:text-sm")}>
+340:                   <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+341:                   <span>{t.nav.bookAppointment}</span>
+342:                 </ShimmerButton>
+343:               </Link>
+344: 
+345:               {/* Mobile Menu Hamburger */}
+346:               <button
+347:                 onClick={() => setIsOpen(true)}
+348:                 aria-label="Open Navigation Menu"
+349:                 className={cn(
+350:                   "xl:hidden p-2.5 rounded-full shadow-sm border active:scale-90 transition-transform",
+351:                   isScrolled || !isDarkNavTheme
+352:                     ? "bg-slate-50 border-slate-200 text-slate-900"
+353:                     : "bg-white/10 border-white/20 text-white"
+354:                 )}
+355:               >
+356:                 <Menu className="w-5 h-5" />
+357:               </button>
+358:             </div>
+359:           </div>
+360:         </div>
+361:       </motion.header>
+362: 
+363:       {/* ======================= MOBILE DRAWER ======================= */}
+364:       <AnimatePresence>
+365:         {isOpen && (
+366:           <>
+367:             <motion.div
+368:               initial={{ opacity: 0 }}
+369:               animate={{ opacity: 1 }}
+370:               exit={{ opacity: 0 }}
+371:               onClick={() => setIsOpen(false)}
+372:               className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 xl:hidden"
+373:             />
+374:             
+375:             <motion.div
+376:               initial={{ x: isRTL ? '100%' : '-100%' }}
+377:               animate={{ x: 0 }}
+378:               exit={{ x: isRTL ? '100%' : '-100%' }}
+379:               transition={{ type: "spring", damping: 28, stiffness: 280 }}
+380:               className={`fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-full w-[85%] max-w-[340px] bg-white z-50 xl:hidden shadow-2xl flex flex-col`}
+381:             >
+382:               {/* Drawer Header */}
+383:               <div className="p-5 flex justify-between items-center border-b border-slate-100">
+384:                 <div className="w-32">
+385:                    <img src="/blogo.png" alt="Dr. Freihan Zakaria" className="w-full h-auto" />
+386:                 </div>
+387:                 <button 
+388:                   onClick={() => setIsOpen(false)} 
+389:                   className="p-2 bg-slate-100 rounded-full hover:bg-rose-50 hover:text-rose-600 transition-colors"
+390:                 >
+391:                   <X className="w-5 h-5" />
+392:                 </button>
+393:               </div>
+394: 
+395:               {/* Drawer Links */}
+396:               <div className="flex-1 overflow-y-auto py-5 px-4 space-y-1.5">
+397:                 {navLinks.map((link, i) => {
+398:                   if (link.hasDropdown) {
+399:                     return (
+400:                       <div key={link.href} className="bg-slate-50/80 rounded-2xl overflow-hidden border border-slate-100">
+401:                          <div 
+402:                            className="flex items-center justify-between p-3.5 cursor-pointer" 
+403:                            onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+404:                          >
+405:                             <span className={cn("text-sm font-bold", location.pathname === link.href ? "text-amber-600" : "text-slate-800")}>
+406:                                {link.label}
+407:                             </span>
+408:                             <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform duration-300", isMobileServicesOpen ? "rotate-180" : "")} />
+409:                          </div>
+410: 
+411:                          <AnimatePresence>
+412:                            {isMobileServicesOpen && (
+413:                              <motion.div
+414:                                initial={{ height: 0, opacity: 0 }}
+415:                                animate={{ height: 'auto', opacity: 1 }}
+416:                                exit={{ height: 0, opacity: 0 }}
+417:                                className="overflow-hidden bg-white/70"
+418:                              >
+419:                                 <div className="px-3 pb-3 space-y-1">
+420:                                    {serviceSubLinks.map((subLink) => (
+421:                                       <Link
+422:                                         key={subLink.id}
+423:                                         to={subLink.href}
+424:                                         onClick={() => setIsOpen(false)}
+425:                                         className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-100 text-slate-700 transition-all text-xs font-medium"
+426:                                       >
+427:                                          <subLink.icon className="w-3.5 h-3.5 text-amber-600" />
+428:                                          <span>{subLink.label}</span>
+429:                                       </Link>
+430:                                    ))}
+431:                                    <Link
+432:                                       to="/services"
+433:                                       onClick={() => setIsOpen(false)}
+434:                                       className="flex items-center gap-2 p-2.5 mt-1 text-xs font-bold text-amber-600 justify-center bg-amber-50 rounded-xl"
+435:                                    >
+436:                                       <span>{language === 'en' ? 'View All Services' : 'عرض كل الخدمات'}</span>
+437:                                       <ArrowRight className={cn("w-3.5 h-3.5", isRTL ? "rotate-180" : "")} />
+438:                                    </Link>
+439:                                 </div>
+440:                              </motion.div>
+441:                            )}
+442:                          </AnimatePresence>
+443:                       </div>
+444:                     );
+445:                   }
+446: 
+447:                   return (
+448:                     <Link
+449:                       key={link.href}
+450:                       to={link.href}
+451:                       onClick={() => setIsOpen(false)}
+452:                       className={cn(
+453:                         "flex items-center justify-between p-3.5 rounded-2xl text-sm font-bold transition-all",
+454:                         location.pathname === link.href 
+455:                           ? "bg-slate-900 text-white shadow-md shadow-slate-900/10" 
+456:                           : "text-slate-700 hover:bg-slate-50"
+457:                       )}
+458:                     >
+459:                       <span>{link.label}</span>
+460:                       {location.pathname === link.href && (
+461:                         <ArrowRight className={cn("w-4 h-4 text-amber-400", isRTL ? "rotate-180" : "")} />
+462:                       )}
+463:                     </Link>
+464:                   );
+465:                 })}
+466:               </div>
+467: 
+468:               {/* Drawer Footer with Language and Booking */}
+469:               <div className="p-5 bg-slate-50 border-t border-slate-100 space-y-4">
+470:                   <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
+471:                     <span>{language === 'en' ? 'Language / اللغة' : 'اللغة / Language'}</span>
+472:                     <div className="flex items-center gap-1 bg-white p-1 rounded-lg border shadow-sm">
+473:                       <button 
+474:                         onClick={() => setLanguage('ar')}
+475:                         className={cn("px-2.5 py-1 rounded text-xs font-bold", language === 'ar' ? 'bg-amber-500 text-slate-950' : 'text-slate-600')}
+476:                       >
+477:                         العربية
+478:                       </button>
+479:                       <button 
+480:                         onClick={() => setLanguage('en')}
+481:                         className={cn("px-2.5 py-1 rounded text-xs font-bold", language === 'en' ? 'bg-amber-500 text-slate-950' : 'text-slate-600')}
+482:                       >
+483:                         English
+484:                       </button>
+485:                     </div>
+486:                   </div>
+487: 
+488:                   <Link to="/booking" onClick={() => setIsOpen(false)} className="block w-full">
+489:                     <ShimmerButton className="w-full py-3.5 text-sm">
+490:                        <Sparkles className="w-4 h-4 text-slate-950" />
+491:                        <span>{t.nav.bookAppointment}</span>
+492:                     </ShimmerButton>
+493:                   </Link>
+494: 
+495:                   <a 
+496:                     href="tel:01126660905" 
+497:                     dir="ltr"
+498:                     className="flex items-center justify-center gap-2 text-xs font-mono font-bold text-slate-500 hover:text-amber-600 py-1"
+499:                   >
+500:                     <Phone className="w-3.5 h-3.5 text-amber-500" />
+501:                     <span dir="ltr">011 2666 0905</span>
+502:                   </a>
+503:               </div>
+504:             </motion.div>
+505:           </>
+506:         )}
+507:       </AnimatePresence>
+508:     </>
+509:   );
+510: };
+511: 
+512: export default Navbar;
+The above content shows the entire, complete file contents of the requested file.

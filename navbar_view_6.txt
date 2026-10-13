@@ -1,0 +1,104 @@
+Created At: 2026-10-13T18:26:32+03:00
+Completed At: 2026-10-13T18:26:32+03:00
+File Path: `file:///c:/Users/dell/Desktop/repo/freehan/src/components/Navbar.tsx`
+Total Lines: 563
+Total Bytes: 27310
+Showing lines 195 to 290
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+195:             </Link>
+196: 
+197:             {/* 2. DESKTOP NAV LINKS (PAGES SECTION) */}
+198:             <nav className={cn(
+199:               "hidden xl:flex items-center p-1 rounded-full border tracking-wide shrink-0",
+200:               isRTL 
+201:                 ? "min-w-[690px] justify-between px-2.5 text-[13px]" 
+202:                 : "gap-0.5 lg:gap-1 px-1 text-xs font-semibold",
+203:               isScrolled || !isDarkNavTheme
+204:                 ? "bg-slate-100/70 border-slate-200/60 text-slate-600"
+205:                 : "bg-white/5 border-white/10 text-slate-300"
+206:             )}>
+207:               {navLinks.map((link) => {
+208:                 const isActive = location.pathname === link.href;
+209:                 
+210:                 if (link.hasDropdown) {
+211:                   return (
+212:                     <div 
+213:                       key={link.href}
+214:                       className="relative shrink-0"
+215:                       onMouseEnter={() => setIsServicesHovered(true)}
+216:                       onMouseLeave={() => setIsServicesHovered(false)}
+217:                     >
+218:                       <Link
+219:                         to={link.href}
+220:                         className={cn(
+221:                           "relative py-1.5 sm:py-2 transition-all duration-300 rounded-full z-10 flex items-center gap-1 whitespace-nowrap shrink-0",
+222:                           isRTL ? "px-3.5 lg:px-4.5 font-bold" : "px-2.5 lg:px-3 text-xs font-semibold",
+223:                           isActive || isServicesHovered 
+224:                             ? (isScrolled || !isDarkNavTheme ? "text-slate-950 font-bold" : "text-white font-bold")
+225:                             : "hover:text-amber-500"
+226:                         )}
+227:                       >
+228:                         <span className="whitespace-nowrap">{link.label}</span>
+229:                         <ChevronDown className={cn("w-3 h-3 transition-transform duration-300 shrink-0", isServicesHovered ? "rotate-180 text-amber-500" : "")} />
+230:                         {isActive && !isServicesHovered && (
+231:                           <motion.div layoutId="nav-pill" className="absolute inset-0 bg-white shadow-sm rounded-full -z-10 border border-slate-200/50" />
+232:                         )}
+233:                       </Link>
+234: 
+235:                       {/* Dropdown Menu */}
+236:                       <AnimatePresence>
+237:                         {isServicesHovered && (
+238:                           <motion.div
+239:                             initial={{ opacity: 0, y: 10, scale: 0.96 }}
+240:                             animate={{ opacity: 1, y: 0, scale: 1 }}
+241:                             exit={{ opacity: 0, y: 8, scale: 0.96 }}
+242:                             transition={{ duration: 0.2 }}
+243:                             className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-80 z-50"
+244:                           >
+245:                             <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 p-2.5 text-slate-800">
+246:                                {serviceSubLinks.map((subItem) => (
+247:                                  <Link
+248:                                    key={subItem.id}
+249:                                    to={subItem.href}
+250:                                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-amber-50/70 text-slate-700 hover:text-slate-950 transition-colors group"
+251:                                  >
+252:                                     <div className="p-2 bg-slate-100 rounded-xl group-hover:bg-amber-500 group-hover:text-slate-950 text-slate-700 transition-colors shrink-0">
+253:                                        <subItem.icon className="w-4 h-4" />
+254:                                     </div>
+255:                                     <div className="text-start">
+256:                                       <p className="text-xs font-bold text-slate-900 group-hover:text-amber-700">{subItem.label}</p>
+257:                                       <p className="text-[10px] text-slate-500 mt-0.5">{subItem.desc}</p>
+258:                                     </div>
+259:                                  </Link>
+260:                                ))}
+261:                                <div className="border-t border-slate-100 mt-1 pt-1.5 px-1">
+262:                                   <Link
+263:                                     to="/services"
+264:                                     className="flex items-center justify-between text-[11px] font-bold text-amber-600 hover:text-amber-700 p-2 rounded-lg hover:bg-amber-50 transition-colors"
+265:                                   >
+266:                                     <span>{language === 'en' ? 'View All Clinic Services' : 'استعراض جميع الخدمات'}</span>
+267:                                     <ArrowRight className={cn("w-3.5 h-3.5", isRTL ? "rotate-180" : "")} />
+268:                                   </Link>
+269:                                </div>
+270:                             </div>
+271:                           </motion.div> 
+272:                         )}
+273:                       </AnimatePresence>
+274:                     </div>
+275:                   );
+276:                 }
+277: 
+278:                 return (
+279:                   <Link
+280:                     key={link.href}
+281:                     to={link.href}
+282:                     className={cn(
+283:                       "relative py-1.5 sm:py-2 transition-all duration-300 rounded-full z-10 whitespace-nowrap shrink-0",
+284:                       isRTL ? "px-3.5 lg:px-4.5 font-bold" : "px-2.5 lg:px-3 text-xs font-semibold",
+285:                       isActive 
+286:                         ? (isScrolled || !isDarkNavTheme ? "text-slate-950 font-bold" : "text-white font-bold")
+287:                         : "hover:text-amber-500"
+288:                     )}
+289:                   >
+290:                     <span className="whitespace-nowrap">{link.label}</span>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

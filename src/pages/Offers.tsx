@@ -1,136 +1,134 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
-import { Percent, Gift, Star, Clock, Copy, Check, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Percent, Gift, Sparkles, Clock, Copy, Check, ArrowRight, ArrowLeft } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-// 1. تعريف واجهة لنوع البيانات (Offer Interface)
-interface Offer {
-  icon: React.ElementType;
+interface OfferItem {
+  id: string;
+  badge: string;
   title: string;
-  value: string;
+  subtitle?: string;
   description: string;
   code: string;
-  bgColor: string;
-  textColor: string;
-  borderColor: string;
-}
-
-// 2. تعريف واجهة لخصائص الكارت (Props Interface)
-interface CouponCardProps {
-  offer: Offer;
-  isRTL: boolean;
-  index: number;
+  icon: React.ElementType;
+  gradient: string;
 }
 
 const Offers = () => {
-  const { language, isRTL } = useLanguage();
+  const { language, isRTL, t } = useLanguage();
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
-  const offers: Offer[] = [
+  const offers: OfferItem[] = [
     {
+      id: 'laser',
+      badge: t.offers.items.laser.badge,
+      title: t.offers.items.laser.title,
+      description: t.offers.items.laser.description,
+      code: t.offers.items.laser.code,
       icon: Percent,
-      title: language === 'ar' ? 'خصم الليزر' : 'Laser Discount',
-      value: '20%',
-      description: language === 'ar'
-        ? 'خصم فوري عند حجز باقة 6 جلسات للجسم كامل'
-        : 'Instant discount on booking a 6-session full body package',
-      code: 'LASER20',
-      bgColor: 'bg-rose-50',
-      textColor: 'text-rose-600',
-      borderColor: 'border-rose-100'
+      gradient: 'from-amber-500/20 to-yellow-500/10',
     },
     {
+      id: 'hydra',
+      badge: t.offers.items.hydra.badge,
+      title: t.offers.items.hydra.title,
+      description: t.offers.items.hydra.description,
+      code: t.offers.items.hydra.code,
       icon: Gift,
-      title: language === 'ar' ? 'هدية مجانية' : 'Free Gift',
-      value: 'FREE',
-      description: language === 'ar'
-        ? 'جلسة هيدرافيشل مجانية مع خدمات بقيمة 3000 جنيه'
-        : 'Free HydraFacial session with services worth 3000 EGP',
-      code: 'HYDRA-GIFT',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-600',
-      borderColor: 'border-blue-100'
+      gradient: 'from-blue-500/20 to-cyan-500/10',
     },
     {
-      icon: Star,
-      title: language === 'ar' ? 'باقة العروس' : 'Bridal Package',
-      value: 'VIP',
-      description: language === 'ar'
-        ? 'بكج الملكة: عناية شاملة بالبشرة والجسم قبل الزفاف'
-        : 'Queen Package: Complete skin and body care before wedding',
-      code: 'BRIDE2024',
-      bgColor: 'bg-amber-50',
-      textColor: 'text-amber-600',
-      borderColor: 'border-amber-100'
+      id: 'bride',
+      badge: t.offers.items.bride.badge,
+      title: t.offers.items.bride.title,
+      subtitle: t.offers.items.bride.subtitle,
+      description: t.offers.items.bride.description,
+      code: t.offers.items.bride.code,
+      icon: Sparkles,
+      gradient: 'from-rose-500/20 to-pink-500/10',
     },
     {
+      id: 'consultation',
+      badge: t.offers.items.consultation.badge,
+      title: t.offers.items.consultation.title,
+      description: t.offers.items.consultation.description,
+      code: t.offers.items.consultation.code,
       icon: Clock,
-      title: language === 'ar' ? 'كشف مجاني' : 'Free Checkup',
-      value: '0 EGP',
-      description: language === 'ar'
-        ? 'استشارة أولية مجانية للأعضاء الجدد لفترة محدودة'
-        : 'Free initial consultation for new members for a limited time',
-      code: 'CONSULT',
-      bgColor: 'bg-emerald-50',
-      textColor: 'text-emerald-600',
-      borderColor: 'border-emerald-100'
+      gradient: 'from-emerald-500/20 to-teal-500/10',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pt-32 pb-20">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#FFF5F7] via-[#FFF9FA] to-[#FDF4F6] pt-36 pb-24 lg:pt-44 overflow-hidden">
       
-      {/* ================= HEADER ================= */}
-      <div className="container px-4 mx-auto mb-16 text-center">
+      {/* Feminine Ambient Glows & Sparkles in Background */}
+      <div className="absolute top-20 start-1/2 -translate-x-1/2 w-[650px] h-[450px] bg-gradient-to-tr from-pink-300/20 via-rose-200/25 to-amber-200/15 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="absolute top-[45%] end-[-10%] w-[450px] h-[450px] bg-rose-200/20 rounded-full blur-[130px] pointer-events-none -z-10" />
+      <div className="absolute bottom-[10%] start-[-5%] w-[400px] h-[400px] bg-pink-200/25 rounded-full blur-[120px] pointer-events-none -z-10" />
+      
+      {/* Background Decor & Header */}
+      <div className="container px-4 mx-auto mb-16 text-center max-w-3xl relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-6"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-rose-100/90 via-pink-50 to-amber-50 border border-rose-200/90 shadow-sm mb-5 text-rose-700"
         >
-           <Sparkles className="w-4 h-4 text-yellow-500" />
-           <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-             {language === 'ar' ? 'عروض محدودة' : 'Limited Time Offers'}
+           <Sparkles className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+           <span className="text-xs font-bold tracking-widest uppercase">
+             {t.offers.title}
            </span>
         </motion.div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 font-cairo">
-           {language === 'ar' ? 'دليلك للتوفير والجمال' : 'Your Guide to Beauty & Savings'}
+        <h1 className="text-3xl sm:text-5xl font-bold text-slate-950 mb-4 font-cairo">
+           {t.offers.subtitle}
         </h1>
-        <p className="text-slate-500 text-lg max-w-2xl mx-auto font-light">
-           {language === 'ar' 
-             ? 'استمتعي بأفضل الخدمات بأفضل الأسعار. صممنا هذه الباقات خصيصاً لراحتك.'
-             : 'Enjoy the best services at the best prices. These packages are designed for your comfort.'}
+        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto font-normal">
+           {t.offers.description}
         </p>
       </div>
 
-      {/* ================= COUPONS GRID ================= */}
-      <div className="container px-4 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+      {/* Offers Cards Grid */}
+      <div className="container px-4 sm:px-6 mx-auto relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
            {offers.map((offer, index) => (
-              <CouponCard key={index} offer={offer} isRTL={isRTL} index={index} />
+              <CouponCard key={offer.id} offer={offer} isRTL={isRTL} index={index} t={t} />
            ))}
         </div>
       </div>
 
-      {/* ================= CALL TO ACTION ================= */}
-      <div className="container px-4 mx-auto mt-20 text-center">
-         <p className="text-slate-400 text-sm mb-6">
-            {language === 'ar' ? '* تطبق الشروط والأحكام على جميع العروض' : '* Terms and conditions apply'}
-         </p>
-         <Button size="lg" className="rounded-full px-10 py-6 text-lg bg-slate-900 hover:bg-slate-800 text-white shadow-xl shadow-slate-200 transition-all hover:-translate-y-1">
-            {language === 'ar' ? 'احجزي موعدك الآن' : 'Book Appointment Now'}
-         </Button>
+      {/* Call to Action Section */}
+      <div className="container px-4 mx-auto mt-20 text-center max-w-2xl relative z-10">
+         <Link to="/booking">
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center justify-center gap-3 rounded-full px-10 py-5 text-sm sm:text-base font-bold bg-gradient-to-r from-rose-500 via-pink-400 to-amber-400 hover:from-rose-600 hover:via-pink-500 hover:to-amber-300 text-slate-950 shadow-2xl shadow-rose-500/30 transition-all group overflow-hidden relative"
+            >
+               <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+               <Sparkles className="w-4 h-4 text-slate-950 animate-pulse relative z-10" />
+               <span className="relative z-10">{t.offers.bookNow}</span>
+               <ArrowIcon className="w-4 h-4 text-slate-950 transition-transform group-hover:translate-x-1.5 rtl:group-hover:-translate-x-1.5 relative z-10" />
+            </motion.button>
+         </Link>
       </div>
 
     </div>
   );
 };
 
-// ================= COUPON CARD COMPONENT =================
-// 3. استخدام الواجهة (Interface) هنا بدلاً من any
-const CouponCard = ({ offer, isRTL, index }: CouponCardProps) => {
+interface CouponCardProps {
+  offer: OfferItem;
+  isRTL: boolean;
+  index: number;
+  t: any;
+}
+
+const CouponCard = ({ offer, isRTL, index, t }: CouponCardProps) => {
   const [copied, setCopied] = useState(false);
+  const Icon = offer.icon;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(offer.code);
@@ -140,71 +138,82 @@ const CouponCard = ({ offer, isRTL, index }: CouponCardProps) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 25 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="group bg-white rounded-3xl border border-slate-100 shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col sm:flex-row h-auto sm:h-48"
+      className="group bg-white/95 backdrop-blur-xl rounded-3xl border border-rose-100/90 shadow-[0_15px_40px_rgba(244,63,94,0.06)] hover:shadow-[0_20px_50px_rgba(244,63,94,0.14)] hover:border-rose-300/80 transition-all duration-500 overflow-hidden flex flex-col justify-between relative"
     >
-       {/* Left Side (Visual / Value) */}
-       <div className={`sm:w-32 p-6 flex flex-col items-center justify-center gap-2 ${offer.bgColor} transition-colors`}>
-          <div className={`p-3 rounded-full bg-white/80 backdrop-blur-sm shadow-sm`}>
-             <offer.icon className={`w-6 h-6 ${offer.textColor}`} />
-          </div>
-          <span className={`text-2xl font-black ${offer.textColor}`}>
-             {offer.value}
-          </span>
+       <div className="p-7">
+         {/* Top Meta */}
+         <div className="flex items-center justify-between gap-4 mb-4">
+           <span className="inline-flex items-center gap-1.5 text-xs font-extrabold px-3.5 py-1.5 rounded-full bg-gradient-to-r from-rose-500 via-pink-400 to-amber-400 text-slate-950 shadow-md shadow-rose-500/20 uppercase tracking-wider">
+             {offer.badge}
+           </span>
+           <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100 text-rose-500 group-hover:bg-gradient-to-r group-hover:from-rose-500 group-hover:to-amber-400 group-hover:text-slate-950 transition-all duration-300 flex items-center justify-center shrink-0">
+              <Icon className="w-5 h-5" />
+           </div>
+         </div>
+
+         {/* Title & Subtitle */}
+         <h3 className="text-xl sm:text-2xl font-bold text-slate-950 mb-1 font-cairo">
+           {offer.title}
+         </h3>
+         {offer.subtitle && (
+           <p className="text-xs font-bold text-rose-600 mb-2">
+             {offer.subtitle}
+           </p>
+         )}
+
+         {/* Description */}
+         <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 font-normal">
+           {offer.description}
+         </p>
        </div>
 
-       {/* Middle (Content) */}
-       <div className="flex-1 p-6 flex flex-col justify-center relative">
-          {/* Dashed line on mobile */}
-          <div className="absolute top-0 left-6 right-6 h-px border-t-2 border-dashed border-slate-100 sm:hidden" />
-          {/* Dashed line on desktop */}
-          <div className={`absolute top-6 bottom-6 w-px border-l-2 border-dashed border-slate-100 hidden sm:block ${isRTL ? 'right-0' : 'left-0'}`} />
+       {/* Coupon Code Strip */}
+       <div className="bg-gradient-to-r from-rose-50/60 via-pink-50/40 to-amber-50/50 p-5 border-t border-rose-100/80 flex items-center justify-between gap-3">
+          <div className="text-start">
+             <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">
+               {t.offers.discountCode}
+             </span>
+             <span className="text-base font-mono font-bold text-slate-900 tracking-wider bg-white/80 px-2 py-0.5 rounded-lg border border-rose-100/80 inline-block mt-0.5">
+               {offer.code}
+             </span>
+          </div>
 
-          <h3 className="text-xl font-bold text-slate-900 mb-2 font-cairo">
-             {offer.title}
-          </h3>
-          <p className="text-sm text-slate-500 leading-relaxed mb-4">
-             {offer.description}
-          </p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCopy}
+              className={cn(
+                "flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all border",
+                copied 
+                  ? "bg-emerald-50 text-emerald-700 border-emerald-300" 
+                  : "bg-white text-rose-700 border-rose-200/80 hover:bg-rose-50 hover:border-rose-300"
+              )}
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>{t.offers.copied}</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>{t.offers.copyCode}</span>
+                </>
+              )}
+            </button>
 
-          {/* Code Section */}
-          <div 
-             onClick={handleCopy}
-             className="flex items-center justify-between bg-slate-50 border border-slate-100 border-dashed rounded-lg px-3 py-2 cursor-pointer hover:bg-slate-100 transition-colors group/code"
-          >
-             <div className="flex flex-col">
-                <span className="text-[10px] text-slate-400 uppercase tracking-wider font-medium">
-                   {isRTL ? 'كود الخصم' : 'Promo Code'}
-                </span>
-                <span className="font-mono font-bold text-slate-800 tracking-wider">
-                   {offer.code}
-                </span>
-             </div>
-             
-             <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-slate-400 group-hover/code:text-slate-900 transition-colors">
-                <AnimatePresence mode='wait'>
-                   {copied ? (
-                      <motion.div
-                        key="check"
-                        initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-                      >
-                         <Check className="w-4 h-4 text-emerald-500" />
-                      </motion.div>
-                   ) : (
-                      <motion.div
-                        key="copy"
-                        initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-                      >
-                         <Copy className="w-4 h-4" />
-                      </motion.div>
-                   )}
-                </AnimatePresence>
-             </div>
+            <Link 
+              to={`/booking?offer=${offer.code}`}
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-500 via-pink-400 to-amber-400 hover:from-rose-600 hover:via-pink-500 hover:to-amber-300 text-slate-950 text-xs font-bold transition-all shadow-sm hover:shadow-md shadow-rose-500/20"
+            >
+              {t.common.bookNow}
+            </Link>
           </div>
        </div>
+
     </motion.div>
   );
 };

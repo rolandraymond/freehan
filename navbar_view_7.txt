@@ -1,0 +1,36 @@
+Created At: 2026-10-13T18:26:52+03:00
+Completed At: 2026-10-13T18:26:52+03:00
+File Path: `file:///c:/Users/dell/Desktop/repo/freehan/src/components/Navbar.tsx`
+Total Lines: 560
+Total Bytes: 27159
+Showing lines 268 to 295
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+268:                           </motion.div> 
+269:                         )}
+270:                       </AnimatePresence>
+271:                     </div>
+272:                   );
+273:                 }
+274: 
+275:                 return (
+276:                   <Link
+277:                     key={link.href}
+278:                     to={link.href}
+279:                     className={cn(
+280:                       "relative py-1.5 sm:py-2 transition-all duration-300 rounded-full z-10 whitespace-nowrap shrink-0",
+281:                       isRTL ? "px-3.5 lg:px-4.5 font-bold" : "px-2.5 lg:px-3 text-xs font-semibold",
+282:                       isActive 
+283:                         ? (isScrolled || !isDarkNavTheme ? "text-slate-950 font-bold" : "text-white font-bold")
+284:                         : "hover:text-amber-500"
+285:                     )}
+286:                   >
+287:                     <span className="whitespace-nowrap">{link.label}</span>
+288:                     {isActive && (
+289:                       <motion.div
+290:                         layoutId="nav-pill"
+291:                         className={cn(
+292:                           "absolute inset-0 shadow-sm rounded-full -z-10",
+293:                           isScrolled || !isDarkNavTheme 
+294:                             ? "bg-white border border-slate-200/60" 
+295:                             : "bg-white/20 border border-white/20"
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
