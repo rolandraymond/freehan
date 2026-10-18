@@ -131,7 +131,7 @@ const TechnologiesSection = () => {
       name: 'Cavitation',
       description: 'Non-Surgical Fat Reduction',
       arabicDescription: 'تفتيت الدهون الموضعية بالموجات فوق الصوتية',
-      image: '/images/dev14.png',
+      image: '/images/dev12.png',
       icon: Activity,
     },
   ];

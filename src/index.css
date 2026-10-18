@@ -1,4 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ==========================================================================
+   OFFICIAL CLINIC BRAND FONTS (EN: Densa, Barlow, JonathanHetegral | AR: Cairo)
+   ========================================================================== */
+@font-face {
+  font-family: 'Densa';
+  src: url('/fonts/Densa-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/Barlow-Medium.ttf') format('truetype');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JonathanHetegral';
+  src: url('/fonts/Jonathan-Hetegral.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -121,15 +148,28 @@
   
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Barlow', 'Montserrat', sans-serif;
   }
   
-  /* Arabic RTL Support */
-  html[dir="rtl"] body {
+  /* Arabic RTL Support (زي موقع دكتورة سالي بالكامل): Cairo لجميع النصوص والعناوين */
+  html[dir="rtl"] body,
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] h4,
+  html[dir="rtl"] h5,
+  html[dir="rtl"] h6 {
     font-family: 'Cairo', sans-serif;
   }
+
+  /* English Major Headings: Densa Display Font (from Drive) */
+  html[dir="ltr"] h1,
+  html[dir="ltr"] h2 {
+    font-family: 'Densa', 'Barlow', sans-serif;
+    letter-spacing: 0.02em;
+  }
   
-  h1, h2, h3, h4, h5, h6 {
+  h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
 }
@@ -239,5 +279,52 @@
   /* Focus Ring Gold */
   .focus-gold:focus {
     @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+
+  /* Brand Typography Utilities */
+  .font-cairo {
+    font-family: 'Cairo', sans-serif;
+  }
+  .font-densa {
+    font-family: 'Densa', 'Barlow', sans-serif;
+  }
+  .font-barlow {
+    font-family: 'Barlow', sans-serif;
+  }
+  .font-script,
+  .font-signature {
+    font-family: 'JonathanHetegral', cursive;
+  }
+  .font-display {
+    font-family: 'Densa', 'Barlow', sans-serif;
+  }
+  html[dir="rtl"] .font-display {
+    font-family: 'Cairo', sans-serif;
+  }
+
+  /* Universal LTR protection for phone numbers and digits */
+  a[href^="tel:"],
+  a[href^="tel:"] span,
+  a[href*="wa.me"] span.font-mono,
+  .font-mono,
+  .phone-number,
+  .ltr-num,
+  [dir="rtl"] a[href^="tel:"],
+  [dir="rtl"] a[href^="tel:"] span,
+  [dir="rtl"] .font-mono,
+  [dir="rtl"] .phone-number,
+  [dir="rtl"] .ltr-num {
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    text-align: left;
+  }
+
+  input[type="tel"],
+  input[inputmode="tel"],
+  [dir="rtl"] input[type="tel"],
+  [dir="rtl"] input[inputmode="tel"] {
+    direction: ltr !important;
+    text-align: left !important;
+    unicode-bidi: isolate !important;
   }
 }

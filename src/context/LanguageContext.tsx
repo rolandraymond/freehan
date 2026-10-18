@@ -16,9 +16,9 @@ interface LanguageProviderProps {
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
-    // Check localStorage for saved preference
-    const saved = localStorage.getItem('sf-touch-language') as Language;
-    return saved || 'en';
+    const saved = (localStorage.getItem('dr-freehan-language') || localStorage.getItem('dr-freihan-language')) as Language;
+    if (saved === 'en' || saved === 'ar') return saved;
+    return 'ar'; // Default to Arabic as requested for clinic audience
   });
 
   useEffect(() => {
@@ -26,21 +26,23 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = language;
     
-    // Update font family based on language
+    // Update Document Title dynamically
     if (language === 'ar') {
+      document.title = 'د. فريهان زكريا | الجلدية والتجميل والليزر والتغذية العلاجية';
       document.body.style.fontFamily = "'Cairo', sans-serif";
     } else {
+      document.title = 'Dr. Freehan Zakaria | Dermatology, Aesthetics, Laser & Clinical Nutrition';
       document.body.style.fontFamily = "'Montserrat', sans-serif";
     }
     
     // Save preference
-    localStorage.setItem('sf-touch-language', language);
+    localStorage.setItem('dr-freehan-language', language);
   }, [language]);
 
   const value: LanguageContextType = {
     language,
     setLanguage,
-    t: translations[language],
+    t: translations[language] || translations.ar,
     isRTL: language === 'ar',
   };
 

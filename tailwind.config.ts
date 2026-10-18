@@ -14,8 +14,15 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Barlow', 'Montserrat', 'sans-serif'],
         arabic: ['Cairo', 'sans-serif'],
+        cairo: ['Cairo', 'sans-serif'],
+        densa: ['Densa', 'Barlow', 'sans-serif'],
+        barlow: ['Barlow', 'sans-serif'],
+        script: ['JonathanHetegral', 'cursive'],
+        signature: ['JonathanHetegral', 'cursive'],
+        display: ['Densa', 'Cairo', 'sans-serif'],
+        heading: ['Densa', 'Cairo', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
